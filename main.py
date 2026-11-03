@@ -1,5 +1,5 @@
 """LangChain agent + Screwtape judge step (pass -> return, retry -> redo with reasons, fail -> stop),
-plus an optional consensus step across several independent samples.
+plus an optional consensus step across several samples.
 
 pip install -r requirements.txt
 export OPENAI_API_KEY=...  SCREWTAPE_API_KEY=...

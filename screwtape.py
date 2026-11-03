@@ -1,7 +1,7 @@
 """Small Screwtape.ai client (Python stdlib only).
 
 Reads SCREWTAPE_API_KEY from the environment. Without a key, judge and consensus
-answer HTTP 402 with x402 payment terms; see the README.
+answer HTTP 402; get a free key at https://screwtape.ai/signup/.
 Fields follow https://screwtape.ai/openapi.json.
 """
 import json
@@ -25,8 +25,8 @@ def _post(path: str, payload: dict, auth: bool = True) -> dict:
     except urllib.error.HTTPError as err:
         if err.code == 402:
             raise SystemExit(
-                "402 Payment Required: set SCREWTAPE_API_KEY (free key, 100 calls per UTC day) "
-                "or pay $0.005 USDC per call with x402 on Base or Solana. See README."
+                "402 Payment Required: set SCREWTAPE_API_KEY. Get a free key (10 calls per UTC day) "
+                "at https://screwtape.ai/signup/ or with get_free_key.py."
             ) from None
         raise SystemExit(f"Screwtape {err.code}: {err.read().decode()[:300]}") from None
 

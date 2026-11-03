@@ -1,4 +1,4 @@
-"""Create a free Screwtape.ai key (100 calls per UTC day) with the documented proof of work.
+"""Create a free Screwtape.ai key (10 calls per UTC day) with the documented proof of work.
 
 SHA-256 of "screwtape-signup-v1:<UTC YYYY-MM-DD>:<nonce>" must start with 12 zero bits (3 hex zeros),
 and the nonce must match ^[A-Za-z0-9_-]{8,64}$. Email and name are optional.

@@ -55,20 +55,31 @@ if "receipt" in v:
 
 Store the receipt next to the output it approved, so a reviewer can later check which request was judged, the verdict it got, and when.
 
-## Get a free key (10 calls per UTC day)
+## Check a seller before you pay
 
-- **In a browser:** https://screwtape.ai/signup/ (email and name are optional, no card). To try judge and consensus with no key first, use https://screwtape.ai/try/ (3 calls per token, about 30 minutes).
+The headline call is `POST /v1/payment-check` ($0.005 after the free tier). It returns allow, review, or block with reasons and a signed receipt. Send `seller_url` or `payment_required`. You can try it with no key:
+
+```bash
+curl -s https://screwtape.ai/v1/payment-check -H 'content-type: application/json' -d '{"seller_url":"https://seller.example/pay","intended_amount":0.005,"agent_id":"agent-001"}'
+```
+
+Agents can also use the hosted MCP server at `https://screwtape.ai/mcp` (Streamable HTTP). The headline tool is `payment_check`.
+
+## Free tier and keys
+
+- **No key:** 3 calls per UTC day. To try judge and consensus in a browser, use https://screwtape.ai/try/ (3 calls per token, about 30 minutes).
+- **In a browser:** https://screwtape.ai/signup/ (email and name are optional, no card).
 - **From code or an agent:** `POST https://screwtape.ai/v1/signup` with a proof of work. The SHA-256 of `screwtape-signup-v1:<UTC YYYY-MM-DD>:<nonce>` must start with 12 zero bits, and the nonce must match `^[A-Za-z0-9_-]{8,64}$`. `python get_free_key.py --name my-agent` does this for you (`--dry-run` only finds the nonce).
 - The key is shown **once**. Screwtape stores only its SHA-256 hash. Limits are 5 keys per IP per hour and 5 per UTC day.
 - Copy `.env.example` to `.env` (git-ignored) or export `SCREWTAPE_API_KEY`. The code reads the key from the environment and never embeds it.
 
 ## Plans
 
-- **Free:** 10 calls per UTC day with a free key.
+- **Free:** 3 calls per UTC day with no key, or 10 with a free key from https://screwtape.ai/signup/. Then $0.005 per call (pay-per-call).
 - **Sandbox Evaluation Pack:** $100 for 2,000 checks. See https://screwtape.ai/pricing/.
 - **Enterprise pilot:** email support@screwtape.ai.
 
-A call without a key gets HTTP 402 Payment Required. This example catches it and tells you to set `SCREWTAPE_API_KEY`.
+After the 3 no-key calls per UTC day, a call without a key gets HTTP 402 Payment Required. This example catches it and tells you to set `SCREWTAPE_API_KEY` or pay per call.
 
 ## Compatibility notes
 
